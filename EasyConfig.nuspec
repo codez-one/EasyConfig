@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>easyconfig</id>
+    <title>Easy Config</title>
+    <version>1.0.0</version>
+    <authors>Kirsten Kluge</authors>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/codez-one/EasyConfigSiteExtension</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A endpoint for SPA client apps to get configuration values.</description>
+    <iconUrl>https://raw.githubusercontent.com/codez-one/EasyConfigSiteExtension/master/clouds.png</iconUrl>
+    <tags>AzureSiteExtension</tags>
+    <packageTypes>
+      <packageType name="AzureSiteExtension" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src="artifacts\**\*.*" target="content" />
+  </files>
+</package>
