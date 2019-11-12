@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/codez-one/EasyConfigSiteExtension</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A endpoint for SPA client apps to get configuration values.</description>
-    <iconUrl>https://raw.githubusercontent.com/codez-one/EasyConfigSiteExtension/master/clouds.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/codez-one/EasyConfigSiteExtension/master/icon.png</iconUrl>
     <tags>AzureSiteExtension</tags>
     <packageTypes>
       <packageType name="AzureSiteExtension" />
