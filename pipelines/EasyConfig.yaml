@@ -57,6 +57,7 @@ steps:
       modifyOutputPath: false
 
   - task: CopyFiles@2
+    displayName: Copy Files
     inputs:
       SourceFolder: '$(NugetFolder)'
       Contents: 'applicationHost.xdt'
@@ -64,6 +65,7 @@ steps:
       OverWrite: true
 
   - task: DotNetCoreCLI@2
+    displayName: Pack
     inputs:
       command: 'pack'
       packagesToPack: '$(Project)'
@@ -71,7 +73,8 @@ steps:
       nobuild: true
       versioningScheme: 'byEnvVar'
       versionEnvVar: 'GitVersion.NuGetVersion'
-      buildProperties: 'NoPackageAnalysis=true'
+      buildProperties: ''
+      verbosityPack: 'Normal'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifact
