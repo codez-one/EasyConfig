@@ -19,6 +19,10 @@ steps:
       packageType: "sdk"
       useGlobalJson: true
 
+  - task: NuGetToolInstaller@1
+    inputs:
+      versionSpec: 
+
   - task: DotNetCoreCLI@2
     displayName: 'Install GitVersion: $(GitVersion)'
     inputs:
@@ -49,33 +53,27 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: Publish
     inputs:
-      command: "publish"
-      projects: "$(Project)"
-      arguments: "--configuration $(buildConfiguration)"
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(Project)'
+      arguments: '--configuration $(buildConfiguration)  --output "$(NugetFolder)/content/"'
+      zipAfterPublish: false
+      modifyOutputPath: false
 
-  - task: DotNetCoreCLI@2
-    displayName: Pack Internal
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  - task: CopyFiles@2
     inputs:
-      command: "pack"
-      packagesToPack: "$(Project)"
-      nobuild: true
-      arguments: "--configuration $(buildConfiguration)"
-      buildProperties: "VersionPrefix=$(GitVersion.MajorMinorPatch);VersionSuffix=pre-$(Build.BuildNumber)"
-      packDirectory: "$(Build.ArtifactStagingDirectory)"
-      verbosityPack: Normal
+      SourceFolder: '$(NugetFolder)'
+      Contents: 'applicationHost.xdt'
+      TargetFolder: '$(NugetFolder)/content'
+      OverWrite: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Pack Release
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  - task: NuGetCommand@2
     inputs:
-      command: "pack"
-      packagesToPack: "$(Project)"
-      nobuild: true
-      arguments: "--configuration $(buildConfiguration)"
-      buildProperties: "VersionPrefix=$(GitVersion.MajorMinorPatch);VersionSuffix="
-      packDirectory: "$(Build.ArtifactStagingDirectory)"
-      verbosityPack: Normal
+      command: 'pack'
+      packagesToPack: '$(NugetFolder)/EasyConfig.SiteExtension.nuspec'
+      versioningScheme: 'byEnvVar'
+      versionEnvVar: 'GitVersion.NuGetVersion'
+      verbosityPack: 'Normal'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifact
