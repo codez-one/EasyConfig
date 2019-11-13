@@ -11,7 +11,7 @@
             },
             "args": [
                 "build",
-                "${workspaceFolder}/src/EasyConfig/EasyConfig.csproj",
+                "${workspaceFolder}/src/EasyConfig.SiteExtension/EasyConfig.SiteExtension.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -23,7 +23,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/EasyConfig/EasyConfig.csproj",
+                "${workspaceFolder}/src/EasyConfig.SiteExtension/EasyConfig.SiteExtension.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -36,7 +36,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/src/EasyConfig/EasyConfig.csproj",
+                "${workspaceFolder}/src/EasyConfig.SiteExtension/EasyConfig.SiteExtension.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

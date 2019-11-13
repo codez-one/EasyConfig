@@ -1,4 +1,4 @@
-﻿namespace EasyConfig.Controllers
+﻿namespace EasyConfig.SiteExtension.Controllers
 {
     using System.Collections.Generic;
     using System.Text.Json;
@@ -8,7 +8,6 @@
     using Newtonsoft.Json.Linq;
 
     [ApiController]
-    [Route(".config")]
     public class ConfigController : ControllerBase
     {
         private readonly ILogger<ConfigController> logger;
@@ -23,8 +22,9 @@
             this.logger = logger;
         }
 
-        [HttpGet("environment")]
-        [HttpGet("environment.json")]
+        [Route("")]
+        [Route("environment")]
+        [Route("environment.json")]
         public JToken GetEnvironment()
         {
             this.logger.LogInformation("Get Environment Config called.");

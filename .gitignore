@@ -336,3 +336,4 @@ ASALocalRun/
 artifacts
 outputs
 *.nupkg
+src/EasyConfig.SiteExtension.NuGet/content

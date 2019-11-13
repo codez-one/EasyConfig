@@ -1,4 +1,4 @@
-namespace EasyConfig
+namespace EasyConfig.SiteExtension
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;

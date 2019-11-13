@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6033835A-23A5-46D0-B3BE-179F28F9EDD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyConfig", "src\EasyConfig\EasyConfig.csproj", "{12A6FCCE-3359-45AD-81A8-ED817C2A38B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyConfig.SiteExtension", "src\EasyConfig.SiteExtension\EasyConfig.SiteExtension.csproj", "{12A6FCCE-3359-45AD-81A8-ED817C2A38B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
