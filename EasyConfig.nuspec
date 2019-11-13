@@ -1,21 +1,23 @@
-<?xml version="1.0"?>
-<package >
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>easyconfig</id>
     <title>Easy Config</title>
     <version>1.0.0</version>
     <authors>Kirsten Kluge</authors>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/codez-one/EasyConfigSiteExtension</projectUrl>
+    <repository type="git" url="https://github.com/codez-one/EasyConfigSiteExtension.git" branch="master" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A endpoint for SPA client apps to get configuration values.</description>
-    <iconUrl>https://raw.githubusercontent.com/codez-one/EasyConfigSiteExtension/master/icon.png</iconUrl>
-    <tags>AzureSiteExtension</tags>
+    <icon>images/icon.png</icon>
+    <tags>AzureSiteExtension SPA</tags>
     <packageTypes>
       <packageType name="AzureSiteExtension" />
     </packageTypes>
   </metadata>
   <files>
     <file src="artifacts\**\*.*" target="content" />
+    <file src="icon.png" target="/images" />
   </files>
 </package>
