@@ -3,7 +3,7 @@
   <metadata>
     <id>EasyConfig.SiteExtension</id>
     <title>Easy Config</title>
-    <version>1.0.0</version>
+    <version>$version$</version>
     <authors>Kirsten Kluge</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/codez-one/EasyConfig</projectUrl>

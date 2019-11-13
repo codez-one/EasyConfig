@@ -31,6 +31,7 @@ steps:
     inputs:
       targetType: "filePath"
       filePath: "pipelines/tools/Run-GitVersion.ps1"
+      arguments: '-Verbose'
       workingDirectory: "$(ProjectFolder)"
 
   - task: DotNetCoreCLI@2
@@ -72,7 +73,7 @@ steps:
       configuration: '$(BuildConfiguration)'
       nobuild: true
       versioningScheme: 'byEnvVar'
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion_NuGetVersion'
       buildProperties: ''
       verbosityPack: 'Normal'
 

@@ -7,6 +7,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <NuspecFile>../EasyConfig.SiteExtension.NuGet/EasyConfig.SiteExtension.nuspec</NuspecFile>
     <NuspecBasePath>../EasyConfig.SiteExtension.NuGet/</NuspecBasePath>
+    <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 

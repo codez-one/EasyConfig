@@ -14,8 +14,8 @@ Process {
 
     Write-Verbose "Writing variables ..."
     foreach ($property in $jsonObj.PSObject.Properties) {
-        Write-Verbose "    GitVersion.$($property.Name): $($property.Value)"
-        Write-Output "##vso[task.setvariable variable=GitVersion.$($property.Name);]$($property.Value)"
+        Write-Verbose "    GitVersion_$($property.Name): $($property.Value)"
+        Write-Output "##vso[task.setvariable variable=GitVersion_$($property.Name);]$($property.Value)"
     }
     Write-Verbose "    Done"
 }

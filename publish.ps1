@@ -6,7 +6,7 @@ $nugetfolder = $dir + "/" + "src/EasyConfig.SiteExtension.NuGet"
 dotnet publish "$extensionfolder/EasyConfig.SiteExtension.csproj" --output "$nugetfolder/content/" -f netcoreapp3.0 -c Release
 Copy-Item "$nugetfolder/applicationHost.xdt" "$nugetfolder/content/"
 
-dotnet pack "$extensionfolder/EasyConfig.SiteExtension.csproj" -o ./output -c Release --no-build
+dotnet pack "$extensionfolder/EasyConfig.SiteExtension.csproj" /p:PackageVersion=1.1.1 -o ./output -c Release --no-build
 # $nupkgfilename = @(Get-Childitem -path ./output/*.nupkg)[0].Name
 
 #dotnet nuget push $nupkgfilename -k $env:NugetKey -s https://api.nuget.org/v3/index.json
