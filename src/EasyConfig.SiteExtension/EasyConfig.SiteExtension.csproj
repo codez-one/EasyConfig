@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <IsPackable>true</IsPackable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <NuspecFile>../EasyConfig.SiteExtension.NuGet/EasyConfig.SiteExtension.nuspec</NuspecFile>
+    <NuspecBasePath>../EasyConfig.SiteExtension.NuGet/</NuspecBasePath>
   </PropertyGroup>
 
   <ItemGroup>

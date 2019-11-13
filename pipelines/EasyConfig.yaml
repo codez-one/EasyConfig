@@ -19,10 +19,6 @@ steps:
       packageType: "sdk"
       useGlobalJson: true
 
-  - task: NuGetToolInstaller@1
-    inputs:
-      versionSpec: 
-
   - task: DotNetCoreCLI@2
     displayName: 'Install GitVersion: $(GitVersion)'
     inputs:
@@ -67,13 +63,15 @@ steps:
       TargetFolder: '$(NugetFolder)/content'
       OverWrite: true
 
-  - task: NuGetCommand@2
+  - task: DotNetCoreCLI@2
     inputs:
       command: 'pack'
-      packagesToPack: '$(NugetFolder)/EasyConfig.SiteExtension.nuspec'
+      packagesToPack: '$(Project)'
+      configuration: '$(BuildConfiguration)'
+      nobuild: true
       versioningScheme: 'byEnvVar'
       versionEnvVar: 'GitVersion.NuGetVersion'
-      verbosityPack: 'Normal'
+      buildProperties: 'NoPackageAnalysis=true'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifact
