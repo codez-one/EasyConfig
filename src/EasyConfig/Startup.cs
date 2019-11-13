@@ -16,7 +16,7 @@ namespace EasyConfig
         public void ConfigureServices(IServiceCollection services)
         {
             _ = services.AddOptions();
-            _ = services.AddControllers();
+            _ = services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

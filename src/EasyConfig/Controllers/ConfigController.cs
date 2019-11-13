@@ -1,11 +1,11 @@
 ﻿namespace EasyConfig.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Text.Json;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json.Linq;
 
     [ApiController]
     [Route(".config")]
@@ -25,27 +25,27 @@
 
         [HttpGet("environment")]
         [HttpGet("environment.json")]
-        public IEnumerable<IConfigurationSection> GetEnvironment()
+        public JToken GetEnvironment()
         {
             this.logger.LogInformation("Get Environment Config called.");
 
-            return this.easyconfig.GetChildren();
+            return this.Serialize(this.easyconfig);
         }
 
-        // public JToken Serialize(IConfiguration config)
-        // {
-        //     var obj = new JObject();
-        //     foreach (var child in config.GetChildren())
-        //     {
-        //         obj.Add(child.Key, this.Serialize(child));
-        //     }
+        private JToken Serialize(IConfiguration config)
+        {
+            var obj = new JObject();
+            foreach (var child in config.GetChildren())
+            {
+                obj.Add(child.Key, this.Serialize(child));
+            }
 
-        //     if (!obj.HasValues && config is IConfigurationSection section)
-        //     {
-        //         return new JValue(section.Value);
-        //     }
+            if (!obj.HasValues && config is IConfigurationSection section)
+            {
+                return new JValue(section.Value);
+            }
 
-        //     return obj;
-        // }
+            return obj;
+        }
     }
 }
