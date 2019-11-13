@@ -10,14 +10,14 @@
     <repository type="git" url="https://github.com/codez-one/EasyConfig.git" branch="master" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An endpoint for SPA client apps hosted in an azure web app to get configuration values stored in environment variables.</description>
-    <icon>Images/icon.png</icon>
+    <icon>images/icon.png</icon>
     <tags>AzureSiteExtension SPA</tags>
     <packageTypes>
       <packageType name="AzureSiteExtension" />
     </packageTypes>
   </metadata>
   <files>
-    <file src="content/**/*.*" target="/" />
+    <file src="content/**/*.*" target="/content" />
     <file src="Images/icon.png" target="/images" />
   </files>
 </package>

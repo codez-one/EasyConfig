@@ -14,7 +14,7 @@ name: $(Year:yy)$(DayOfYear)$(Rev:rr)
 
 steps:
   - task: UseDotNet@2
-    displayName: Use .NET Core $(DotNetVersion)
+    displayName: Install dotnet core SDK
     inputs:
       packageType: "sdk"
       useGlobalJson: true
