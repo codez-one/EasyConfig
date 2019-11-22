@@ -22,7 +22,10 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "EASYCONFIG__apiUrl": "https://codez.one/api",
-                "EASYCONFIG__test__value": "blubb"
+                "EASYCONFIG__test__value": "blubb",
+                //"KeyVault__Uri": "peng"
+                //"KeyVault__Uri__0": "peng",
+                //"KeyVault__Uri__1": "puff"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
