@@ -1,6 +1,7 @@
 ﻿namespace EasyConfig.SiteExtension.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.Json;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -34,18 +35,36 @@
 
         private JToken Serialize(IConfiguration config)
         {
-            var obj = new JObject();
-            foreach (var child in config.GetChildren())
-            {
-                obj.Add(child.Key, this.Serialize(child));
-            }
+            var childs = config.GetChildren();
+            var isArray = childs.Any() && childs.All(child => int.TryParse(child.Key, out var number));
 
-            if (!obj.HasValues && config is IConfigurationSection section)
+            if (isArray)
             {
-                return new JValue(section.Value);
-            }
+                var obj = new JArray();
 
-            return obj;
+                foreach (var child in childs)
+                {
+                    obj.Add(this.Serialize(child));
+                }
+
+                return obj;
+            }
+            else
+            {
+                var obj = new JObject();
+
+                foreach (var child in childs)
+                {
+                    obj.Add(child.Key, this.Serialize(child));
+                }
+
+                if (!obj.HasValues && config is IConfigurationSection section)
+                {
+                    return new JValue(section.Value);
+                }
+
+                return obj;
+            }
         }
     }
 }
