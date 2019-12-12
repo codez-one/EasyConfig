@@ -3,7 +3,7 @@ $dir = Split-Path $scriptpath
 $extensionfolder = $dir + "/" + "src/EasyConfig.SiteExtension"
 $nugetfolder = $dir + "/" + "src/EasyConfig.SiteExtension.NuGet"
 
-dotnet publish "$extensionfolder/EasyConfig.SiteExtension.csproj" --output "$nugetfolder/content/" -f netcoreapp3.0 -c Release
+dotnet publish "$extensionfolder/EasyConfig.SiteExtension.csproj" --output "$nugetfolder/content/" -f netcoreapp3.1 -c Release
 Copy-Item "$nugetfolder/applicationHost.xdt" "$nugetfolder/content/"
 
 dotnet pack "$extensionfolder/EasyConfig.SiteExtension.csproj" /p:PackageVersion=1.1.1 -o ./output -c Release --no-build
