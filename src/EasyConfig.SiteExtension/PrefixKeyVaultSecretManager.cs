@@ -1,34 +1,33 @@
-namespace EasyConfig.SiteExtension
+namespace EasyConfig.SiteExtension;
+
+using Microsoft.Extensions.Configuration;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Security.KeyVault.Secrets;
+
+public class PrefixKeyVaultSecretManager : KeyVaultSecretManager
 {
-    using Microsoft.Azure.KeyVault.Models;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Configuration.AzureKeyVault;
+    private readonly string prefix;
+    private readonly bool removePrefix;
 
-    public class PrefixKeyVaultSecretManager : IKeyVaultSecretManager
+    public PrefixKeyVaultSecretManager(
+        string prefix = "EASYCONFIG",
+        bool removePrefix = false
+    )
     {
-        private readonly string prefix;
-        private readonly bool removePrefix;
+        this.prefix = $"{prefix}--";
+        this.removePrefix = removePrefix;
+    }
 
-        public PrefixKeyVaultSecretManager(
-            string prefix = "EASYCONFIG",
-            bool removePrefix = false
-        )
+    public override bool Load(SecretProperties secret) => secret.Name.StartsWith(this.prefix, StringComparison.InvariantCultureIgnoreCase);
+
+    public override string GetKey(KeyVaultSecret secret)
+    {
+        var secretIdentifier = secret.Name;
+
+        if (this.removePrefix)
         {
-            this.prefix = $"{prefix}--";
-            this.removePrefix = removePrefix;
+            secretIdentifier = secretIdentifier[this.prefix.Length..];
         }
-
-        public bool Load(SecretItem secret) => secret.Identifier.Name.StartsWith(this.prefix);
-
-        public string GetKey(SecretBundle secret)
-        {
-            var secretIdentifier = secret.SecretIdentifier.Name;
-
-            if (this.removePrefix)
-            {
-                secretIdentifier = secretIdentifier.Substring(this.prefix.Length);
-            }
-            return secretIdentifier.Replace("--", ConfigurationPath.KeyDelimiter);
-        }
+        return secretIdentifier.Replace("--", ConfigurationPath.KeyDelimiter);
     }
 }

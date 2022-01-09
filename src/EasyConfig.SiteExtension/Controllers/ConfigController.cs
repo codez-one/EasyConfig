@@ -1,70 +1,66 @@
-﻿namespace EasyConfig.SiteExtension.Controllers
+namespace EasyConfig.SiteExtension.Controllers;
+
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Nodes;
+
+[ApiController]
+public class ConfigController : ControllerBase
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.Json;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json.Linq;
+    private readonly ILogger<ConfigController> logger;
+    private readonly IConfigurationSection easyconfig;
 
-    [ApiController]
-    public class ConfigController : ControllerBase
+    public ConfigController(
+        IConfiguration configuration,
+        ILogger<ConfigController> logger
+    )
     {
-        private readonly ILogger<ConfigController> logger;
-        private readonly IConfigurationSection easyconfig;
+        this.easyconfig = configuration.GetSection("EASYCONFIG");
+        this.logger = logger;
+    }
 
-        public ConfigController(
-            IConfiguration configuration,
-            ILogger<ConfigController> logger
-        )
+    [Route("")]
+    [Route("config")]
+    [Route("config.json")]
+    [Route("environment")]
+    [Route("environment.json")]
+    public JsonNode? GetEnvironment()
+    {
+        Logging.Controllers.Config.GetConfigRequested(this.logger);
+
+        return Serialize(this.easyconfig);
+    }
+
+    private static JsonNode? Serialize(IConfiguration config)
+    {
+        var childs = config.GetChildren();
+        var isArray = childs.Any() && childs.All(child => int.TryParse(child.Key, out var number));
+
+        if (isArray)
         {
-            this.easyconfig = configuration.GetSection("EASYCONFIG");
-            this.logger = logger;
-        }
+            var obj = new JsonArray();
 
-        [Route("")]
-        [Route("environment")]
-        [Route("environment.json")]
-        public JToken GetEnvironment()
-        {
-            this.logger.LogInformation("Get Environment Config called.");
-
-            return this.Serialize(this.easyconfig);
-        }
-
-        private JToken Serialize(IConfiguration config)
-        {
-            var childs = config.GetChildren();
-            var isArray = childs.Any() && childs.All(child => int.TryParse(child.Key, out var number));
-
-            if (isArray)
+            foreach (var child in childs)
             {
-                var obj = new JArray();
-
-                foreach (var child in childs)
-                {
-                    obj.Add(this.Serialize(child));
-                }
-
-                return obj;
+                obj.Add(Serialize(child));
             }
-            else
+
+            return obj;
+        }
+        else
+        {
+            var obj = new JsonObject();
+
+            foreach (var child in childs)
             {
-                var obj = new JObject();
-
-                foreach (var child in childs)
-                {
-                    obj.Add(child.Key, this.Serialize(child));
-                }
-
-                if (!obj.HasValues && config is IConfigurationSection section)
-                {
-                    return new JValue(section.Value);
-                }
-
-                return obj;
+                obj.Add(child.Key, Serialize(child));
             }
+
+            if (obj.Count == 0 && config is IConfigurationSection section)
+            {
+                return JsonValue.Create(section.Value);
+            }
+
+            return obj;
         }
     }
 }

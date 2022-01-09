@@ -8,7 +8,6 @@ variables:
   Project: "$(Build.SourcesDirectory)/src/EasyConfig.SiteExtension/EasyConfig.SiteExtension.csproj"
   ProjectFolder: "$(Build.SourcesDirectory)/src/EasyConfig.SiteExtension"
   NugetFolder: "$(Build.SourcesDirectory)/src/EasyConfig.SiteExtension.NuGet"
-  GitVersion: "5.1.2"
 
 name: $(Year:yy)$(DayOfYear)$(Rev:rr)
 
@@ -20,19 +19,19 @@ steps:
       useGlobalJson: true
 
   - task: DotNetCoreCLI@2
-    displayName: 'Install GitVersion: $(GitVersion)'
+    displayName: 'Restore dotnet tools'
     inputs:
-      command: custom
+      command: 'custom'
       custom: 'tool'
-      arguments: 'install GitVersion.Tool --version $(GitVersion)  --tool-path ./pipelines/tools/gitversion'
+      arguments: 'restore'
 
-  - task: PowerShell@2
-    displayName: Run GitVersion
+  - task: DotNetCoreCLI@2
+    displayName: 'Run GitVersion'
     inputs:
-      targetType: "filePath"
-      filePath: "pipelines/tools/Run-GitVersion.ps1"
-      arguments: '-Verbose'
-      workingDirectory: "$(ProjectFolder)"
+      command: 'custom'
+      custom: 'tool'
+      arguments: 'run dotnet-gitversion /updateassemblyinfo AssemblyInfo.cs /ensureassemblyinfo /output buildserver /nofetch'
+      workingDirectory: '$(ProjectFolder)'
 
   - task: DotNetCoreCLI@2
     displayName: Restore
@@ -73,7 +72,7 @@ steps:
       configuration: '$(BuildConfiguration)'
       nobuild: true
       versioningScheme: 'byEnvVar'
-      versionEnvVar: 'GitVersion_NuGetVersion'
+      versionEnvVar: 'GitVersion.NuGetVersion'
       buildProperties: ''
       verbosityPack: 'Normal'
 

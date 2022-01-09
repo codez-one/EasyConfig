@@ -1,0 +1,145 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "tenantId": "[subscription().tenantId]",
+        "webAppName": "[uniqueString(resourceGroup().id, '0c61332e-646a-4e96-b9ff-ade92112644d')]",
+        "keyVaultName": "[variables('webAppName')]",
+        "keyVaultSecrets": [
+            {
+                "name": "EASYCONFIG--KeyVaultExample1",
+                "value": "First vaule from KeyVault"
+            },
+            {
+                "name": "EASYCONFIG--KeyVaultExample2",
+                "value": "Second vaule from KeyVault"
+            }
+        ]
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2018-02-14",
+            "name": "[variables('keyVaultName')]",
+            "location": "[variables('location')]",
+            "tags": {
+                "displayName": "KeyVault",
+                "Deploymentmethod": "ARM"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+            ],
+            "properties": {
+                "enabledForDeployment": false,
+                "enabledForTemplateDeployment": false,
+                "enabledForDiskEncryption": false,
+                "tenantId": "[variables('tenantId')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[variables('tenantId')]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('webAppName')), '2019-08-01', 'Full').identity.principalId]",
+                        "permissions": {
+                            "secrets": [
+                                "get",
+                                "list"
+                            ]
+                        }
+                    }
+                ],
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "networkAcls": {
+                    "defaultAction": "Allow",
+                    "bypass": "AzureServices",
+                    "ipRules": [
+                    ],
+                    "virtualNetworkRules": [
+                    ]
+                }
+            }
+        },
+        {
+            "copy": {
+                "name": "secrets",
+                "count": "[length(variables('keyVaultSecrets'))]"
+            },
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2021-04-01-preview",
+            "name": "[format('{0}/{1}', variables('keyVaultName'), variables('keyVaultSecrets')[copyIndex()].name)]",
+            "tags": {
+                "displayName": "KeyVault - Secrets"
+            },
+            "properties": {
+                "value": "[variables('keyVaultSecrets')[copyIndex()].value]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('webAppName')]",
+            "location": "[variables('location')]",
+            "tags": {
+                "displayName": "App Service Plan"
+            },
+            "sku": {
+                "name": "F1"
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[variables('webAppName')]",
+            "location": "[variables('location')]",
+            "tags": {
+                "displayName": "Web App"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('webAppName'))]"
+            ],
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppName'))]"
+            },
+            "resources": [
+                {
+                    "type": "config",
+                    "name": "appsettings",
+                    "apiVersion": "2016-08-01",
+                    "tags": {
+                        "displayName": "Application Settings"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+                    ],
+                    "properties": {
+                        "KeyVault__Uri": "[reference(resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName')), '2019-09-01').vaultUri]",
+                        "EASYCONFIG__apiUri": "[concat('https://', reference(resourceId('Microsoft.Web/sites', variables('webAppName')), '2019-08-01').defaultHostName, '/api')]"
+                    }
+                },
+                {
+                    "type": "siteextensions",
+                    "name": "EasyConfig.SiteExtension",
+                    "apiVersion": "2021-02-01",
+                    "tags": {
+                        "displayName": "Site Extension: EasyConfig"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+                    ],
+                    "properties": {
+                    }
+                }
+            ]
+        }
+    ]
+}

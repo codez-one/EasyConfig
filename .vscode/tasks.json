@@ -3,12 +3,12 @@
     "tasks": [
         {
             "label": "build",
-            "command": "dotnet",
-            "type": "process",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
+            "command": "dotnet",
+            "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/src/EasyConfig.SiteExtension/EasyConfig.SiteExtension.csproj",
