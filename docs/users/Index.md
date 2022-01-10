@@ -48,8 +48,14 @@ All other *Application settings* which does not start with `EASYCONFIG__` will b
 ### Azure KeyVault
 
 An other way to store the Settings is using an Azure KeyVault.
+To use the KeyVault you simply use in the app settings the following line configuration to add it:
 
-coming soon &trade;
+```
+KeyVault__Uri
+```
+
+And set it to the uri of your keyvault. Then you must allow the managed identity of your webapp to read the keyvault.
+Then it will be use all the secrets in the KeyVault that start with `EASYCONFIG--`.
 
 ### Using the endpoint
 
