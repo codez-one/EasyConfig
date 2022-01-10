@@ -5,7 +5,7 @@
 ## Requirements
 
 - Extensions can only be installed in Windows basesd App Services at the moment.
-- The extension is written in c# using dotnet core 3.1 as self-contained application, so there should be **no** dependency to installed frameworks
+- The extension is written in c# using dotnet 6.0 as self-contained application, so there should be **no** dependency to installed frameworks
 
 ## Installation
 
