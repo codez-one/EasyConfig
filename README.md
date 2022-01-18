@@ -2,6 +2,8 @@
 
 > provided by [codez.one](https://codez.one)
 
+[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcodez-one%2FEasyConfig%2Fmaster%2Fazure%2Fazuredeploy.json)
+
 ## Introduction
 
 An endpoint for SPA client apps hosted in an Azure Web App to get configuration values stored in environment variables or Azure KeyVault.

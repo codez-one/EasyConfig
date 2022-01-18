@@ -5,7 +5,7 @@
 ## Requirements
 
 - Extensions can only be installed in Windows basesd App Services at the moment.
-- The extension is written in c# using dotnet core 3.1 as self-contained application, so there should be **no** dependency to installed frameworks
+- The extension is written in c# using dotnet 6.0 as self-contained application, so there should be **no** dependency to installed frameworks
 
 ## Installation
 
@@ -48,8 +48,14 @@ All other *Application settings* which does not start with `EASYCONFIG__` will b
 ### Azure KeyVault
 
 An other way to store the Settings is using an Azure KeyVault.
+To use the KeyVault you simply use in the app settings the following line configuration to add it:
 
-coming soon &trade;
+```
+KeyVault__Uri
+```
+
+And set it to the uri of your keyvault. Then you must allow the managed identity of your webapp to read the keyvault.
+Then it will be use all the secrets in the KeyVault that start with `EASYCONFIG--`.
 
 ### Using the endpoint
 
